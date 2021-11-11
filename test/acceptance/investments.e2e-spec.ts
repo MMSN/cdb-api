@@ -1,8 +1,8 @@
 import request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { CreatorService } from '../../src/modules/example/services';
-import { Example } from '../../src/modules/example/schemas/example.schema';
+import { CreatorService } from '../../src/modules/investment/services';
+import { Investment } from '../../src/modules/investment/schemas/investment.schema';
 import { givenExample } from '../helpers';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
@@ -10,7 +10,7 @@ import { MikroOrmTestModule } from '../fixtures/mikro-orm-test.module';
 import { MikroORM } from '@mikro-orm/core';
 import { wipeDatabase } from '../fixtures/database';
 import { getValidationOptions } from '../../src/config';
-import { ExampleModule } from 'src/modules/example/example.module';
+import { InvestmentModule } from 'src/modules/investment/investment.module';
 
 describe('short-stays (e2e)', () => {
   let app: INestApplication;
@@ -20,8 +20,8 @@ describe('short-stays (e2e)', () => {
     const module = await Test.createTestingModule({
       imports: [
         MikroOrmModule.forRootAsync({ useClass: MikroOrmTestModule }),
-        MikroOrmModule.forFeature([Example]),
-        ExampleModule,
+        MikroOrmModule.forFeature([Investment]),
+        InvestmentModule,
       ],
       providers: [CreatorService],
     }).compile();
@@ -40,7 +40,7 @@ describe('short-stays (e2e)', () => {
     await app.close();
   });
 
-  describe('/examples (Post)', () => {
+  describe('/investments (Post)', () => {
     it('should be able to post a new example', async () => {
       const example = givenExample();
       await request(app.getHttpServer())

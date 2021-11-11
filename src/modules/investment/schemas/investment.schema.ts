@@ -12,5 +12,11 @@ import { BaseSchema } from '../../../shared/schemas/base.schema';
 export class Example extends BaseSchema {
   @ApiProperty()
   @Property()
-  name!: string;
+  investmentDate: string;
+  @ApiProperty()
+  @Property()
+  cdbRate: number;
+  @ApiProperty()
+  @Property()
+  currentDate: string;
 }

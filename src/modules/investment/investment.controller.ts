@@ -13,13 +13,13 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import {
-  CreateExampleDto,
+  CreateInvestmentDto,
   FindOneParamsDto,
-  ListAllExamplesDto,
+  ListAllInvestmentsDto,
   UpdateExampleDto,
 } from './dtos';
 import { ApiHeader, ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import { Example } from './schemas/example.schema';
+import { Investment } from './schemas/investment.schema';
 import {
   CreatorService,
   FinderService,
@@ -30,10 +30,10 @@ import {
 import { PaginateResult } from '../../shared/contracts/custom.repository';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller('examples')
-@ApiSecurity('token')
-@ApiTags('Examples')
-export class ExamplesController {
+@Controller('investment')
+//@ApiSecurity('token')
+@ApiTags('investment')
+export class InvestmentController {
   constructor(
     private readonly creatorService: CreatorService,
     private readonly finderService: FinderService,
@@ -44,17 +44,19 @@ export class ExamplesController {
 
   @Get()
   findAll(
-    @Query() query?: ListAllExamplesDto,
-  ): Promise<PaginateResult<Example>> {
+    @Query() query?: ListAllInvestmentsDto,
+  ): Promise<PaginateResult<Investment>> {
     return this.indexerService.index(query);
   }
 
   @Post()
-  create(@Body() createExampleDto: CreateExampleDto): Promise<Example> {
-    return this.creatorService.create(createExampleDto);
+  create(
+    @Body() createInvestmentDto: CreateInvestmentDto,
+  ): Promise<Investment> {
+    return this.creatorService.create(createInvestmentDto);
   }
 
-  @Get('/:id')
+  /*  @Get('/:id')
   @ApiResponse({ status: 404 })
   async findOne(@Param() params: FindOneParamsDto): Promise<Example> {
     const shortStay = await this.finderService.byId(params.id);
@@ -84,5 +86,5 @@ export class ExamplesController {
   @ApiResponse({ status: 404 })
   async destroy(@Param() params: FindOneParamsDto): Promise<void> {
     await this.removerService.byId(params.id);
-  }
+  }*/
 }

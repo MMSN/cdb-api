@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { SortTypeEnum } from '../../../shared/enums/sort-type.enum';
 import { SortOrderEnum } from '../../../shared/enums/sort-order.enum';
 
-export class ListAllExamplesDto {
+export class ListAllInvestmentsDto {
   @IsOptional()
   @IsInt()
   @Min(1)

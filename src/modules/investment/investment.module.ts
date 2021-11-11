@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { ExamplesController } from './example.controller';
-import { Example } from './schemas/example.schema';
+import { InvestmentController } from './investment.controller';
+import { Investment } from './schemas/investment.schema';
 import {
   IndexerService,
   CreatorService,
@@ -11,8 +11,8 @@ import {
 } from './services';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Example])],
-  controllers: [ExamplesController],
+  imports: [MikroOrmModule.forFeature([Investment])],
+  controllers: [InvestmentController],
   providers: [
     IndexerService,
     CreatorService,
@@ -21,4 +21,4 @@ import {
     RemoverService,
   ],
 })
-export class ExampleModule {}
+export class InvestmentModule {}

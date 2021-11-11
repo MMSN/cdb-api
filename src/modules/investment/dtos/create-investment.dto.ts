@@ -1,6 +1,6 @@
-import { IsISO8601, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsISO8601, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateExampleDto {
+export class CreateInvestmentDto {
   @IsNotEmpty()
   @IsISO8601()
   investmentDate: string;

@@ -1,16 +1,18 @@
-import { ListAllExamplesDto } from '../dtos';
-import { Example } from '../schemas/example.schema';
+import { ListAllInvestmentsDto } from '../dtos';
+import { Investment } from '../schemas/investment.schema';
 import { Injectable } from '@nestjs/common';
 import { SortOrderEnum } from '../../../shared/enums/sort-order.enum';
 import { SortTypeEnum } from '../../../shared/enums/sort-type.enum';
 import { PaginateResult } from '../../../shared/contracts/custom.repository';
-import { ExampleRepository } from '../repositories/example.repository';
+import { InvestmentRepository } from '../repositories/investment.repository';
 
 @Injectable()
 export class IndexerService {
-  constructor(private readonly exampleRepository: ExampleRepository) {}
+  constructor(private readonly investmentRepository: InvestmentRepository) {}
 
-  index(query: ListAllExamplesDto = {}): Promise<PaginateResult<Example>> {
+  index(
+    query: ListAllInvestmentsDto = {},
+  ): Promise<PaginateResult<Investment>> {
     const {
       page = 1,
       limit = 10,
@@ -30,7 +32,7 @@ export class IndexerService {
       sortBy = sortOrder === SortOrderEnum.ASC ? 'name' : '-name';
     }
 
-    return this.exampleRepository.paginate({
+    return this.investmentRepository.paginate({
       page,
       limit,
       where: criteria,

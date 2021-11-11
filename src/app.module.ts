@@ -5,7 +5,7 @@ import { HealthModule } from './modules/health/health.module';
 import { WinstonConfigService } from './shared/services/winston-config.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MikroOrmConfigService } from './shared/services/mikro-orm-config.service';
-import { ExampleModule } from './modules/example/example.module';
+import { InvestmentModule } from './modules/investment/investment.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { ExampleModule } from './modules/example/example.module';
       useClass: MikroOrmConfigService,
     }),
     HealthModule,
-    ExampleModule,
+    InvestmentModule,
   ],
   providers: [Logger],
 })
