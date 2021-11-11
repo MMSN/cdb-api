@@ -18,10 +18,6 @@ export class ListAllInvestmentsDto {
   limit?: number = 10;
 
   @IsOptional()
-  @IsString()
-  name?: string;
-
-  @IsOptional()
   @IsEnum(SortTypeEnum)
   sortType?: SortTypeEnum;
 

@@ -9,7 +9,7 @@ import { BaseSchema } from '../../../shared/schemas/base.schema';
   default: true,
 })
 @Entity({ collection: 'short-stays' })
-export class Example extends BaseSchema {
+export class Investment extends BaseSchema {
   @ApiProperty()
   @Property()
   investmentDate: string;

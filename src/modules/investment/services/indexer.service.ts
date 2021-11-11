@@ -16,17 +16,12 @@ export class IndexerService {
     const {
       page = 1,
       limit = 10,
-      name,
       sortType,
       sortOrder = SortOrderEnum.ASC,
     } = query;
-    const select = '_id name description currency properties rules';
+    const select = '_id investmentDate cdbRate currentDate';
     const criteria: { [key: string]: unknown } = {};
     let sortBy = '';
-
-    if (name) {
-      criteria.name = { $regex: name, $options: 'i' };
-    }
 
     if (sortType === SortTypeEnum.ALPHABETICAL) {
       sortBy = sortOrder === SortOrderEnum.ASC ? 'name' : '-name';
