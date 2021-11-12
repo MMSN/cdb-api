@@ -16,7 +16,7 @@ import {
   CreateInvestmentDto,
   FindOneParamsDto,
   ListAllInvestmentsDto,
-  UpdateExampleDto,
+  UpdateInvestmentDto,
 } from './dtos';
 import { ApiHeader, ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { Investment } from './schemas/investment.schema';
@@ -56,19 +56,19 @@ export class InvestmentController {
     return this.creatorService.create(createInvestmentDto);
   }
 
-  /*  @Get('/:id')
+  @Get('/:id')
   @ApiResponse({ status: 404 })
-  async findOne(@Param() params: FindOneParamsDto): Promise<Example> {
-    const shortStay = await this.finderService.byId(params.id);
+  async findOne(@Param() params: FindOneParamsDto): Promise<Investment> {
+    const investment = await this.finderService.byId(params.id);
 
-    if (!shortStay) {
+    if (!investment) {
       throw new NotFoundException();
     }
 
-    return shortStay;
+    return investment;
   }
 
-  @Patch('/:id')
+  /*  @Patch('/:id')
   @ApiResponse({ status: 404 })
   update(
     @Param() params: FindOneParamsDto,
@@ -77,7 +77,7 @@ export class InvestmentController {
     return this.updaterService.update(params.id, updateExampleDto);
   }
 
-  @Delete('/:id')
+  /*  @Delete('/:id')
   @HttpCode(204)
   @ApiResponse({
     status: 400,

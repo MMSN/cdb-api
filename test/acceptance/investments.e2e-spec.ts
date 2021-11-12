@@ -11,8 +11,9 @@ import { MikroORM } from '@mikro-orm/core';
 import { wipeDatabase } from '../fixtures/database';
 import { getValidationOptions } from '../../src/config';
 import { InvestmentModule } from '../../src/modules/investment/investment.module';
+import { InvestmentFactory } from './investments.factory';
 
-describe('short-stays (e2e)', () => {
+describe('Investments (e2e)', () => {
   let app: INestApplication;
   let orm: MikroORM;
 
@@ -54,6 +55,43 @@ describe('short-stays (e2e)', () => {
             page: 1,
             totalItems: 0,
             totalPages: 0,
+          });
+        });
+    });
+
+    it('should be able to reach find all and get an array with one element', async () => {
+      await new InvestmentFactory(orm.em).createOne();
+      await request(app.getHttpServer())
+        .get('/investment')
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body.items).toHaveLength(1);
+          expect(body).toMatchObject({
+            hasNextPage: false,
+            hasPrevPage: false,
+            limit: 10,
+            page: 1,
+            totalItems: 1,
+            totalPages: 1,
+          });
+        });
+    });
+
+    it('should be able to reach find all and get an array with two element', async () => {
+      await new InvestmentFactory(orm.em).createOne();
+      await new InvestmentFactory(orm.em).createOne();
+      await request(app.getHttpServer())
+        .get('/investment')
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body.items).toHaveLength(2);
+          expect(body).toMatchObject({
+            hasNextPage: false,
+            hasPrevPage: false,
+            limit: 10,
+            page: 1,
+            totalItems: 2,
+            totalPages: 1,
           });
         });
     });
@@ -145,4 +183,62 @@ describe('short-stays (e2e)', () => {
         });
     });
   });
+
+  describe('/investments/{id} (Get)', () => {
+    it('should returns a investment by id', async () => {
+      const investment = await new InvestmentFactory(orm.em).createOne();
+      const { _id } = investment;
+      await request(app.getHttpServer())
+        .get(`/investment/${_id}`)
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body.cdbRate).toEqual(investment.cdbRate);
+          expect(body.investmentDate).toEqual(investment.investmentDate);
+          expect(body.currentDate).toEqual(investment.currentDate);
+        });
+    });
+
+    it('should not return an invalid investment by id', async () => {
+      await request(app.getHttpServer())
+        .get('/investment/60d355342e1d540011e77371')
+        .expect(404)
+        .expect(({ body }) => {
+          expect(body).toMatchObject({
+            message: 'Not Found',
+            statusCode: 404,
+          });
+        });
+    });
+  });
+
+  /*  describe('/investments/{id} (Patch)', () => {
+    it('should update a investment by id', async () => {
+      const investment = await new InvestmentFactory(orm.em).createOne();
+      const { _id } = investment;
+
+      const updateInvestment = new InvestmentFactory(orm.em).makeOne();
+
+      await request(app.getHttpServer())
+        .patch(`/investment/${_id}`)
+        .send(updateInvestment)
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body.cdbRate).toEqual(updateInvestment.cdbRate);
+          expect(body.investmentDate).toEqual(updateInvestment.investmentDate);
+          expect(body.currentDate).toEqual(updateInvestment.currentDate);
+        });
+    });
+
+    it('should not update an invalid investment by id', async () => {
+      await request(app.getHttpServer())
+        .patch('/investment/60d355342e1d540011e77371')
+        .expect(404)
+        .expect(({ body }) => {
+          expect(body).toMatchObject({
+            message: 'Not Found',
+            statusCode: 404,
+          });
+        });
+    });
+  });*/
 });

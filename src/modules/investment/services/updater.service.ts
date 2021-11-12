@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Investment } from '../schemas/investment.schema';
-import { UpdateExampleDto } from '../dtos';
+import { UpdateInvestmentDto } from '../dtos';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { wrap } from '@mikro-orm/core';
 import { InvestmentRepository } from '../repositories/investment.repository';
@@ -9,7 +9,7 @@ import { InvestmentRepository } from '../repositories/investment.repository';
 export class UpdaterService {
   constructor(private readonly investmentRepository: InvestmentRepository) {}
 
-  async update(id: string, dto: UpdateExampleDto): Promise<Investment> {
+  async update(id: string, dto: UpdateInvestmentDto): Promise<Investment> {
     const investment = await this.investmentRepository.findOne({
       _id: new ObjectId(id),
     });

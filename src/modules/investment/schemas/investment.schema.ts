@@ -8,7 +8,7 @@ import { BaseSchema } from '../../../shared/schemas/base.schema';
   args: false,
   default: true,
 })
-@Entity({ collection: 'short-stays' })
+@Entity({ collection: 'Investment' })
 export class Investment extends BaseSchema {
   @ApiProperty()
   @Property()
