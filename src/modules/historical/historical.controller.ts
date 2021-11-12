@@ -16,21 +16,17 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { ApiHeader, ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { Readable } from 'stream';
+import { ReaderService } from './services/reader.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('historical')
 //@ApiSecurity('token')
 @ApiTags('historical')
 export class HistoricalController {
+  constructor(private readonly readerService: ReaderService) {}
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-
-    console.log(file.buffer.toString());
-    const aux = file.buffer.toString().split('\n');
-    console.log(aux.length);
-    console.log(aux[0]);
-    console.log(aux[aux.length - 1]);
+    this.readerService.submitAll(file.buffer.toString());
   }
 }

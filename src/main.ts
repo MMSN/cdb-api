@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { getValidationOptions } from './config';
-import { authenticationMiddleware } from './shared/middlewares/authentication';
 
 const { npm_package_version } = process.env;
 
@@ -15,9 +14,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  if (!process.env.DISABLE_AUTH || process.env.DISABLE_AUTH === 'false') {
-    app.use(authenticationMiddleware);
-  }
   await app.listen(3000);
 }
 

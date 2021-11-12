@@ -14,8 +14,16 @@ export class MikroOrmTestModule implements MikroOrmOptionsFactory {
       type: 'mongo',
       tsNode: true,
       clientUrl: (await mongoServer).getUri(),
-      entitiesTs: ['src/shared/schemas', 'src/modules/investment/schemas'],
-      entities: ['dist/shared/schemas', 'dist/modules/investment/schemas'],
+      entitiesTs: [
+        'src/shared/schemas',
+        'src/modules/investment/schemas',
+        'src/modules/historical/schemas',
+      ],
+      entities: [
+        'dist/shared/schemas',
+        'dist/modules/investment/schemas',
+        'dist/modules/historical/schemas',
+      ],
     };
   }
 }

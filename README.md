@@ -1,6 +1,3 @@
-[![Deploy to staging](https://github.com/indahousi/patinhas/actions/workflows/deploy-staging.yml/badge.svg?branch=main)](https://github.com/indahousi/patinhas/actions/workflows/deploy-staging.yml)
-[![Node.js CI](https://github.com/indahousi/patinhas/actions/workflows/ci.yml/badge.svg)](https://github.com/indahousi/patinhas/actions/workflows/ci.yml)
-
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>

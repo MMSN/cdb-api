@@ -5,6 +5,7 @@ import {
   MikroOrmOptionsFactory,
 } from '@mikro-orm/nestjs';
 import { Investment } from '../../modules/investment/schemas/investment.schema';
+import { Historical } from 'src/modules/historical/schemas/historical.schema';
 
 @Injectable()
 export class MikroOrmConfigService implements MikroOrmOptionsFactory {
@@ -16,7 +17,7 @@ export class MikroOrmConfigService implements MikroOrmOptionsFactory {
     return {
       type: 'mongo',
       clientUrl: this.configService.get<string>('MONGO_URI'),
-      entities: [Investment],
+      entities: [Investment, Historical],
       debug: this.configService.get<string>('LOG_LEVEL') === 'debug',
       logger: (message) => this.logger.debug(message),
     };
