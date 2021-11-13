@@ -5,7 +5,7 @@ import {
   MikroOrmOptionsFactory,
 } from '@mikro-orm/nestjs';
 import { Investment } from '../../modules/investment/schemas/investment.schema';
-import { Historical } from 'src/modules/historical/schemas/historical.schema';
+import { Historical } from '../../modules/historical/schemas/historical.schema';
 
 @Injectable()
 export class MikroOrmConfigService implements MikroOrmOptionsFactory {

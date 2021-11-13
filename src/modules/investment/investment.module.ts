@@ -8,10 +8,13 @@ import {
   UpdaterService,
   FinderService,
   RemoverService,
+  CalculatorService,
 } from './services';
+import { Historical } from '../historical/schemas/historical.schema';
+import { FinderHistorycalService } from '../historical/services/finder.service';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Investment])],
+  imports: [MikroOrmModule.forFeature([Investment, Historical])],
   controllers: [InvestmentController],
   providers: [
     IndexerService,
@@ -19,6 +22,8 @@ import {
     UpdaterService,
     FinderService,
     RemoverService,
+    CalculatorService,
+    FinderHistorycalService,
   ],
 })
 export class InvestmentModule {}

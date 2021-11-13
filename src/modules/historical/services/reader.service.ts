@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Historical } from '../schemas/historical.schema';
 import { CreateCDIEntryDto } from '../dto/create-cdi-entry.dto';
-import { HistoricalRepository } from '../repositories/historical.repository';
+import { CreatorService } from './creator.service';
 
 @Injectable()
 export class ReaderService {
-  constructor(private readonly investmentRepository: HistoricalRepository) {}
+  constructor(private readonly creatorService: CreatorService) {}
 
   async submitAll(content: string): Promise<void> {
     const lines = content.split('\n');
@@ -14,7 +14,7 @@ export class ReaderService {
       if (lines[i] !== undefined) {
         if (lines[i].includes('CDI')) {
           const entry = await this.generateCDIasDto(lines[i]);
-          console.log(entry);
+          await this.creatorService.create(entry);
         }
       }
     }

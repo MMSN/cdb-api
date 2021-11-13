@@ -28,6 +28,7 @@ import {
   RemoverService,
 } from './services';
 import { PaginateResult } from '../../shared/contracts/custom.repository';
+import { CalculatorService } from './services/calculator.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('investment')
@@ -40,6 +41,7 @@ export class InvestmentController {
     private readonly indexerService: IndexerService,
     private readonly updaterService: UpdaterService,
     private readonly removerService: RemoverService,
+    private readonly calculatorService: CalculatorService,
   ) {}
 
   @Get()
@@ -87,4 +89,16 @@ export class InvestmentController {
   async destroy(@Param() params: FindOneParamsDto): Promise<void> {
     await this.removerService.byId(params.id);
   }*/
+
+  @Get('/:id/calculate')
+  @ApiResponse({ status: 404 })
+  async calculateOne(@Param() params: FindOneParamsDto): Promise<any> {
+    const investment = await this.finderService.byId(params.id);
+
+    if (!investment) {
+      throw new NotFoundException();
+    }
+
+    this.calculatorService.calculate(investment);
+  }
 }
