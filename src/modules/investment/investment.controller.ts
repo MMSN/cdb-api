@@ -29,6 +29,7 @@ import {
 } from './services';
 import { PaginateResult } from '../../shared/contracts/custom.repository';
 import { CalculatorService } from './services/calculator.service';
+import { CalculatedInvestmentInterface } from './contracts/calculated-investment.interface';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('investment')
@@ -92,13 +93,15 @@ export class InvestmentController {
 
   @Get('/:id/calculate')
   @ApiResponse({ status: 404 })
-  async calculateOne(@Param() params: FindOneParamsDto): Promise<any> {
+  async calculateOne(
+    @Param() params: FindOneParamsDto,
+  ): Promise<CalculatedInvestmentInterface[]> {
     const investment = await this.finderService.byId(params.id);
 
     if (!investment) {
       throw new NotFoundException();
     }
 
-    this.calculatorService.calculate(investment);
+    return this.calculatorService.calculate(investment);
   }
 }

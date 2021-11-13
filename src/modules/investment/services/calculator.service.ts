@@ -3,6 +3,7 @@ import { Investment } from '../schemas/investment.schema';
 import { DateTime, Interval } from 'luxon';
 import { days } from 'src/shared/helpers/date.helper';
 import { FinderHistorycalService } from '../../historical/services/finder.service';
+import { CalculatedInvestmentInterface } from '../contracts/calculated-investment.interface';
 
 @Injectable()
 export class CalculatorService {
@@ -15,10 +16,49 @@ export class CalculatorService {
       DateTime.fromISO(investment.investmentDate),
       DateTime.fromISO(investment.currentDate),
     );
+    const cdbtax = investment.cdbRate;
+    let CumulativeTCDI = 0;
+    const historicCDIk: number[] = [];
+    const resultInvestment: CalculatedInvestmentInterface[] = [];
 
-    const aux = [...days(interval)];
-    const auxDate = `${aux[0].year}-${aux[0].month}-${aux[0].day}`;
-    const findOne = await this.finderHistorycalService.byEntryDate(auxDate);
-    console.log(findOne);
+    const daysInterval = this.getDateFromInterval(interval);
+    for (let i = 0; i < 5; i++) {
+      const auxDate = `${daysInterval[i].year}-${daysInterval[i].month}-${daysInterval[i].day}`;
+      let findOne;
+      try {
+        findOne = await this.finderHistorycalService.byEntryDate(auxDate);
+      } catch (e) {
+        console.log('Not found: ', auxDate);
+      }
+      if (!findOne) continue;
+      //console.log(findOne);
+      const cdik = Number(this.getTCDIK(findOne.tax).toFixed(8));
+      //console.log(cdik);
+      //console.log(this.getCumulativeTCDI(cdik, cdbtax));
+      CumulativeTCDI = Number(this.getCumulativeTCDI(cdik, cdbtax).toFixed(16));
+      //console.log(
+      //  (CumulativeTCDI + historicCDIk.reduce((a, b) => a + b, 0)) as number,
+      //);
+      //console.log(historicCDIk);
+      resultInvestment.push({
+        date: auxDate,
+        unitPrice: (CumulativeTCDI +
+          historicCDIk.reduce((a, b) => a + b, 0)) as number,
+      });
+      historicCDIk.push(Number((CumulativeTCDI - 1).toFixed(16)));
+    }
+    return resultInvestment;
+  }
+
+  private getDateFromInterval(interval: Interval): DateTime[] {
+    return [...days(interval)];
+  }
+
+  private getTCDIK(cdik: number): number {
+    return (cdik / 100 + 1) ** (1 / 252) - 1;
+  }
+
+  private getCumulativeTCDI(tcdik: number, tcdb: number): number {
+    return 1 + tcdik * (tcdb / 100);
   }
 }
