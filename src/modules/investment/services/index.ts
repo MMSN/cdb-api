@@ -4,3 +4,4 @@ export { UpdaterService } from './updater.service';
 export { FinderService } from './finder.service';
 export { RemoverService } from './remover.service';
 export { CalculatorService } from './calculator.service';
+export { ChartService } from './chart.service';

@@ -11,6 +11,8 @@ import {
   HttpCode,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Header,
+  Res,
 } from '@nestjs/common';
 import {
   CreateInvestmentDto,
@@ -26,10 +28,12 @@ import {
   IndexerService,
   UpdaterService,
   RemoverService,
+  ChartService,
 } from './services';
 import { PaginateResult } from '../../shared/contracts/custom.repository';
 import { CalculatorService } from './services/calculator.service';
 import { CalculatedInvestmentInterface } from './contracts/calculated-investment.interface';
+import { createReadStream, createWriteStream } from 'fs';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('investment')
@@ -43,6 +47,7 @@ export class InvestmentController {
     private readonly updaterService: UpdaterService,
     private readonly removerService: RemoverService,
     private readonly calculatorService: CalculatorService,
+    private readonly chartService: ChartService,
   ) {}
 
   @Get()
@@ -103,5 +108,30 @@ export class InvestmentController {
     }
 
     return this.calculatorService.calculate(investment);
+  }
+
+  @Get('/:id/calculate/graph')
+  //@ApiResponse({ status: 404 })
+  async generateInvestmentGrapph(
+    @Param() params: FindOneParamsDto,
+    @Res() response: any,
+  ): Promise<any> {
+    const investment = await this.finderService.byId(params.id);
+
+    if (!investment) {
+      throw new NotFoundException();
+    }
+
+    await this.chartService.draw(
+      await this.calculatorService.calculate(investment),
+    );
+
+    const stream = await createReadStream('./example.png');
+
+    response.set({
+      'Content-Type': 'image/png',
+    });
+
+    stream.pipe(response);
   }
 }

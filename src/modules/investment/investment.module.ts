@@ -9,6 +9,7 @@ import {
   FinderService,
   RemoverService,
   CalculatorService,
+  ChartService,
 } from './services';
 import { Historical } from '../historical/schemas/historical.schema';
 import { FinderHistorycalService } from '../historical/services/finder.service';
@@ -24,6 +25,7 @@ import { FinderHistorycalService } from '../historical/services/finder.service';
     RemoverService,
     CalculatorService,
     FinderHistorycalService,
+    ChartService,
   ],
 })
 export class InvestmentModule {}

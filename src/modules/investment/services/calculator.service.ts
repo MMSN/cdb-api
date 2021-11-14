@@ -22,7 +22,7 @@ export class CalculatorService {
     const resultInvestment: CalculatedInvestmentInterface[] = [];
 
     const daysInterval = this.getDateFromInterval(interval);
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < daysInterval.length; i++) {
       const auxDate = `${daysInterval[i].year}-${daysInterval[i].month}-${daysInterval[i].day}`;
       let findOne;
       try {
@@ -31,15 +31,8 @@ export class CalculatorService {
         console.log('Not found: ', auxDate);
       }
       if (!findOne) continue;
-      //console.log(findOne);
       const cdik = Number(this.getTCDIK(findOne.tax).toFixed(8));
-      //console.log(cdik);
-      //console.log(this.getCumulativeTCDI(cdik, cdbtax));
       CumulativeTCDI = Number(this.getCumulativeTCDI(cdik, cdbtax).toFixed(16));
-      //console.log(
-      //  (CumulativeTCDI + historicCDIk.reduce((a, b) => a + b, 0)) as number,
-      //);
-      //console.log(historicCDIk);
       resultInvestment.push({
         date: auxDate,
         unitPrice: (CumulativeTCDI +
