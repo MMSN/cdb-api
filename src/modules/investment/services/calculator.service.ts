@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Investment } from '../schemas/investment.schema';
 import { DateTime, Interval } from 'luxon';
-import { days } from 'src/shared/helpers/date.helper';
+//import { days } from 'src/shared/helpers/date.helper';
+import { days } from '../../../../src/shared/helpers/date.helper';
 import { FinderHistorycalService } from '../../historical/services/finder.service';
 import { CalculatedInvestmentInterface } from '../contracts/calculated-investment.interface';
 

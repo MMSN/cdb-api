@@ -19,3 +19,11 @@ export function givenInvestmentRight(): CreateInvestmentDto {
     currentDate: '2016-12-26',
   };
 }
+
+export function givenInvestmentWrongDates(): CreateInvestmentDto {
+  return {
+    investmentDate: '2016-12-26',
+    cdbRate: 103.5,
+    currentDate: '2016-11-14',
+  };
+}

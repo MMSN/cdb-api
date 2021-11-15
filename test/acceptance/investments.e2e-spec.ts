@@ -3,7 +3,11 @@ import { Test } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { CreatorService } from '../../src/modules/investment/services';
 import { Investment } from '../../src/modules/investment/schemas/investment.schema';
-import { givenInvestmentWrong, givenInvestmentRight } from '../helpers';
+import {
+  givenInvestmentWrong,
+  givenInvestmentRight,
+  givenInvestmentWrongDates,
+} from '../helpers';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 import { MikroOrmTestModule } from '../fixtures/mikro-orm-test.module';
@@ -179,6 +183,20 @@ describe('Investments (e2e)', () => {
             error: 'Unprocessable Entity',
             message: ['currentDate must be a valid ISO 8601 date string'],
             statusCode: 422,
+          });
+        });
+    });
+
+    it('should not be able to post a new investment with currentDate before investmentDate', async () => {
+      const investment = givenInvestmentWrongDates();
+      await request(app.getHttpServer())
+        .post('/investment')
+        .send(investment)
+        .expect(400)
+        .expect(({ body }) => {
+          expect(body).toMatchObject({
+            message: 'Bad Request',
+            statusCode: 400,
           });
         });
     });
